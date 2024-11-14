@@ -5,14 +5,16 @@ import { ITVShow, ShowOption } from '../../types';
 interface tvShowsState {
   searchResults: ShowOption[];
   tvShowDetails: ITVShow | null;
-  loading: boolean;
+  fetchLoading: boolean;
+  searchLoading: boolean;
   error: boolean;
 }
 
 const initialState: tvShowsState = {
   searchResults: [],
   tvShowDetails: null,
-  loading: false,
+  fetchLoading: false,
+  searchLoading: false,
   error: false,
 };
 
@@ -23,27 +25,27 @@ export const tvShowsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchSearchResults.pending, (state) => {
-        state.loading = true;
+        state.searchLoading = true;
         state.error = false;
       })
       .addCase(fetchSearchResults.fulfilled, (state, action: PayloadAction<ShowOption[]>) => {
-        state.loading = false;
+        state.searchLoading = false;
         state.searchResults = action.payload;
       })
       .addCase(fetchSearchResults.rejected, (state) => {
-        state.loading = false;
+        state.searchLoading = false;
         state.error = true;
       })
       .addCase(fetchTVShowDetails.pending, (state) => {
-        state.loading = true;
+        state.fetchLoading = true;
         state.error = false;
       })
       .addCase(fetchTVShowDetails.fulfilled, (state, action: PayloadAction<ITVShow>) => {
-        state.loading = false;
+        state.fetchLoading = false;
         state.tvShowDetails = action.payload;
       })
       .addCase(fetchTVShowDetails.rejected, (state) => {
-        state.loading = false;
+        state.fetchLoading = false;
         state.error = true;
       });
   },

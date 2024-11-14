@@ -9,7 +9,7 @@ const SearchBar = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [title, setTitle] = useState<string>('');
-  const { searchResults, loading, error } = useAppSelector((state: RootState) => state.tvShows);
+  const { searchResults, searchLoading, error } = useAppSelector((state: RootState) => state.tvShows);
 
   useEffect(() => {
     if (title) {
@@ -22,47 +22,62 @@ const SearchBar = () => {
   };
 
   const handleOptionSelect = (id: number) => {
-    navigate(`/showdetails/${id}`);
+    navigate(`/show/${id}`);
+    setTitle('');
   };
 
   return (
-    <div>
-      <TextField
-        label="Search TV Shows"
-        variant="outlined"
-        value={title}
-        onChange={handleInputChange}
-        fullWidth
-        InputProps={{
-          endAdornment: (
-            <>
-              {loading && <CircularProgress color="inherit" size={20} />}
-            </>
-          ),
-        }}
-      />
-      {error && <p>Error fetching results</p>}
-      {title && !loading && (
-        <Box>
-          {searchResults.map((show) => (
-            <div
-              key={show.id}
-              onClick={() => handleOptionSelect(show.id)}
-              style={{
-                padding: '10px',
-                marginBottom: '5px',
-                border: '1px solid #ccc',
-                cursor: 'pointer',
-                borderRadius: '4px',
-                backgroundColor: '#f9f9f9',
-              }}
-            >
-              {show.title}
-            </div>
-          ))}
-        </Box>
-      )}
-    </div>
+    <Box
+      display="flex"
+      justifyContent="center"
+      mt={4}
+      px={2}
+    >
+      <Box width="100%" maxWidth="600px">
+        <TextField
+          label="Search TV Shows"
+          variant="outlined"
+          value={title}
+          onChange={handleInputChange}
+          fullWidth
+          slotProps={{
+            input: {
+              endAdornment: (
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  sx={{ visibility: searchLoading ? 'visible' : 'hidden' }}
+                >
+                  <CircularProgress color="primary" size={24} />
+                </Box>
+              ),
+            },
+          }}
+        />
+        {error && <p>Error fetching results</p>}
+        {title && !searchLoading && (
+          <Box mt={2}>
+            {searchResults.map((show) => (
+              <div
+                key={show.id}
+                onClick={() => handleOptionSelect(show.id)}
+                style={{
+                  padding: '10px',
+                  marginBottom: '5px',
+                  border: '1px solid #ccc',
+                  cursor: 'pointer',
+                  borderRadius: '4px',
+                  backgroundColor: '#f9f9f9',
+                }}
+              >
+                {show.title}
+              </div>
+            ))}
+          </Box>
+        )}
+      </Box>
+    </Box>
   );
 };
 
