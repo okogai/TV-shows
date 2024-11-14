@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ITVShow, ShowOption, ShowSearchResult } from '../../types';
-import axiosAPI from '../../axiosAPI.ts';
+import axiosAPI from '../../utils/axiosAPI.ts';
 
 
 export const fetchSearchResults = createAsyncThunk <ShowOption[], string>('tvShows/createAsyncThunk', async (title: string) => {
