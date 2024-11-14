@@ -1,7 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { tvShowsReducer } from '../store/slices/tvShowsSlice.ts';
 
 export const store = configureStore({
   reducer: {
+    tvShows: tvShowsReducer,
   },
 });
 
